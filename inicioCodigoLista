@@ -1,0 +1,37 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 10
+typedef struct{
+	char nome[50];
+}t_elemento;
+typedef struct{
+	t_elemento vetor[MAX];
+	int i;
+}t_lista;
+t_lista criar();
+int isVazia(t_lista *lista);
+int isCheia(t_lista *lista);
+int getTamanho(t_lista *lista);
+t_elemento *getElemento(t_lista * lista, int pos);
+main(){
+}
+t_lista criar(){
+	t_lista lista;
+	lista.i = -1;
+	return lista;
+};
+int isVazia(t_lista *lista){
+	return(lista->i==-1);
+}
+int isCheia(t_lista *lista){
+	return(lista->i==MAX-1);
+}
+int getTamanho(t_lista *lista){
+	return lista->i+1;
+}
+t_elemento *getElemento(t_lista * lista, int pos){
+	    if ( (pos > lista->i) || (pos < 0) )
+        return 0;
+
+    return &(lista->vetor[pos]);
+}
