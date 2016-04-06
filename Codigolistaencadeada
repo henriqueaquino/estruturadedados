@@ -38,17 +38,14 @@ int menu();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-main(){
+int main(){
 	
-	t_lista lista, aux;
+	t_lista lista;
 	t_elemento nome;
 	int pos = 0;
 	
-	printf("%x\n",lista);
-	printf("%x\n", lista);
-	printf("%x\n",&lista);
 	printf("Digite o nome para insercao: \n");
-	scanf("%[ -~]",&nome.nome);
+	scanf("%[ -~]",&(nome.nome));
 	getchar();
 	printf("\n");
 	printf("Nome inserido: %s\n\n",nome.nome);
@@ -57,9 +54,7 @@ main(){
 	getchar();
 	printf("Posicao escolhida: %d\n\n",pos);
 	inserir(&lista,pos,nome);
-	printf("lista %x  ", lista);
-	printf("%x\n", lista);
-	printf("\n");
+	printf("%s",lista->dado.nome);
 	
 	
 	/*while(1){
