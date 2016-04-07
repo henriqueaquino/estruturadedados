@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<strings.h>
 
 typedef struct{
 	
@@ -16,72 +17,126 @@ typedef t_no * t_lista;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-t_no *criaNo();
-
-int isVazia(t_lista lista);
-
-int getTamanho(t_lista lista);
-
-t_no *getNo(t_lista lista, int pos);
-
-t_elemento *getElemento(t_lista lista, int pos);
-
-int compara(t_elemento dado1, t_elemento dado2);
-	
-int getPosicao(t_lista lista, t_elemento dado);
-
-int inserir (t_lista *lista, int pos, t_elemento dado);
-
-int remover (t_lista *lista, int pos);
-
-int menu();
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-int main(){
-	
-	t_lista lista;
-	t_elemento nome;
-	int pos = 0;
-	
-	printf("Digite o nome para insercao: \n");
-	scanf("%[ -~]",&(nome.nome));
-	getchar();
-	printf("\n");
-	printf("Nome inserido: %s\n\n",nome.nome);
-	printf("Digite a posicao para inserir: \n");
-	scanf("%d",&pos);
-	getchar();
-	printf("Posicao escolhida: %d\n\n",pos);
-	inserir(&lista,pos,nome);
-	printf("%s",lista->dado.nome);
-	
-	
-	/*while(1){
-		aux = lista;
-		switch(menu()){
-			case 1 : 
-						while(aux != NULL){
-				     	printf("[ %d ] - %s",pos, aux->dado.nome);
-			    	 	aux = aux->prox;
-			     		pos++;
-					 }
-					 break;
-			case 2 : printf("Digite o nome para inserir: \n");
-					 scanf("%[ -~]",&nome.nome);
-					 getchar();
-					 printf("Digite a posicao que deseja inserir: \n");
-					 scanf("%d",&pos);
-					 getchar();
-					 inserir(&lista,pos,nome);
-					 break;							 
-		}
-		printf("\n");
-	}*/
-	system("pause");
+int compara(t_elemento dado1, t_elemento dado2) {
+    return strcmp(dado1.nome, dado2.nome);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+t_no * criaNo() {
+    t_no * no = (t_no*) malloc(sizeof(t_no));
+
+    if (no)
+        no->prox = NULL;
+
+    return no;
+}
+
+int isVazia(t_lista lista) {
+    return (lista == NULL);
+}
+
+
+int getTamanho(t_lista lista) {
+    int n = 0;
+    while (lista != NULL) {
+        lista = lista->prox;
+        n++;
+    }
+    return n;
+}
+
+
+t_no * getNo(t_lista lista, int pos) {
+    int n = 0;
+
+    if (pos<0)
+        return 0;
+
+    while (lista != NULL) {
+        if (n==pos)
+            return lista;
+        lista = lista->prox;
+        n++;
+    }
+    return 0;
+}
+
+
+t_elemento * getElemento(t_lista lista, int pos){
+    t_no * no = getNo(lista, pos);
+    if (no != NULL)
+        return &(no->dado);
+    else
+        return NULL;
+}
+	
+int getPosicao(t_lista lista, t_elemento dado) {
+    int n = 0;
+    while (lista != NULL) {
+        if (compara(lista->dado, dado)==0)
+            return n;
+        lista = lista->prox;
+        n++;
+    }
+    return -1;
+}
+
+int inserir(t_lista *lista, int pos, t_elemento dado) {
+    t_no * p, * novo;
+
+    if (pos == 0) {
+        novo = criaNo();
+        if (novo == NULL)
+            return 0;
+        novo->dado = dado;
+        novo->prox = *lista;
+        *lista = novo;
+        return 1;
+    }
+    p = getNo(*lista, pos-1);
+    if (p == NULL)
+         return 0;
+    novo = criaNo();
+    if (novo == NULL)
+        return 0;
+    novo->dado = dado;
+    novo->prox = p->prox;
+    p->prox = novo;
+
+    return 1;
+}
+
+
+int remover(t_lista *lista, int pos) {
+    t_no *anterior, *p;
+    if (isVazia(*lista)) return 0;
+    if (pos<0) return 0;
+
+    if (pos == 0) {
+        p = *lista;
+        *lista = p->prox;
+    } else { 
+        anterior = getNo(*lista, pos-1);
+        if (anterior == NULL)
+            return 0;
+        p = anterior->prox;
+        if (p == NULL)
+            return 0;
+        anterior->prox = p->prox;
+    }
+    free(p);
+    return 1;
+}
+
+int getPosicaoInsercaoOrdenada(t_lista lista, t_elemento dado) {
+    int n = 0;
+    while (lista != NULL) {
+        if (compara(lista->dado, dado)>=0)
+            return n;
+        lista = lista->prox;
+        n++;
+    }
+    return n;
+}
 
 int menu(){
 	
@@ -106,136 +161,47 @@ int menu(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-t_no *criaNo(){
 	
-	t_no *no = (t_no*) malloc( sizeof(t_no));
+main(){
 	
-	if (no) no->prox = NULL;
-	return no;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int isVazia(t_lista lista){
+	t_lista lista, aux;
+	t_elemento dado;
+	int pos = 0, i = 0;
 	
-	return (lista == NULL);
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int getTamanho(t_lista lista){
-	int n = 0;
+	/*printf("Digite o nome para insercao: \n");
+	scanf("%[ -~]",&(dado.nome));
+	getchar();
+	printf("\n");
+	printf("Nome inserido: %s\n\n",dado.nome);
 	
-	while(lista != NULL){
-		
-		lista = lista->prox;
-		n++;
+	pos = getPosicaoInsercaoOrdenada(lista, dado); 
+	
+	inserir(&lista,pos,dado);
+	
+	printf("%s\n", lista->dado.nome);*/
+	
+	
+	while(1){
+		aux = lista;
+		switch(menu()){
+			case 1 : 	while(aux != NULL){
+				     	printf("Posicao [ %d ]  Conteudo:[ %s ]\n\n",pos, aux->dado.nome);
+			    	 	aux = aux->prox;
+			     		pos++;
+					 	}
+					 break;
+			case 2 : printf("Digite o nome para inserir: \n");
+					 scanf("%[ -~]",&(dado.nome));
+					 pos = getPosicaoInsercaoOrdenada(lista, dado);
+					 printf("Digite a posicao: \n");
+					 scanf("%d",&pos);
+					 getchar();
+					 inserir(&lista, pos, dado);
+					 break;
+			default : printf("Nenhuma opcao escolhida !\n"); 					 			 
+		}
+		printf("\n");
 	}
 	
-	return n;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-t_no *getNo(t_lista lista, int pos){
-	
-	int n = 0;
-	
-	if(pos<0) return 0;
-	
-	while(lista != NULL){
-		
-		if (n == pos) return lista;
-		
-		lista = lista->prox;
-		n++;	
-	}
-	
-	return 0;	
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-t_elemento *getElemento(t_lista lista, int pos){
-	
-	t_no *no = getNo(lista,pos);
-	
-	if(no != NULL) return &(no->dado);
-	else
-		return NULL;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int getPosicao(t_lista lista, t_elemento dado){
-	
-	int n = 0;
-	
-	while (lista != NULL){
-		
-		if(compara(lista->dado, dado) == 0) return n;
-		
-		lista = lista->prox;
-		n++;
-	}
-	return -1;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int compara(t_elemento dado1, t_elemento dado2){
-	
-	return strcmp(dado1.nome, dado2.nome);
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int inserir (t_lista *lista, int pos, t_elemento dado){
-	
-	t_no *p, *novo;
-	
-	if (pos == 0) return 0;
-	
-	novo->dado = dado;
-	novo->prox = *lista;
-	*lista = novo;
-	return 1;
-	
-	p = getNo(*lista, pos-1);
-	
-	if (novo == NULL) return 0;
-	
-	novo->dado = dado;
-	novo->prox = p->prox;
-	p->prox = novo;
-	
-	return 1;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int remover (t_lista *lista, int pos){
-	
-	t_no *anterior, *p;
-	
-	if (isVazia(*lista)) return 0;
-	if (pos < 0) return 0;
-	if (pos == 0){
-		
-		p = *lista;
-		*lista = p->prox;
-		
-	}
-	else{
-	
-			anterior = getNo(*lista, pos-1);
-			if (anterior == NULL) return 0;
-			p = anterior->prox;
-		
-			if (p == NULL) return 0;
-			anterior->prox = p->prox;
-	}
-	free(p);
-	return 1;
-};
+	system("pause");
+}
