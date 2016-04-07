@@ -164,7 +164,7 @@ int menu(){
 	
 main(){
 	
-	t_lista lista, aux;
+	t_lista lista = NULL, aux;
 	t_elemento dado;
 	int pos = 0, i = 0;
 	
@@ -193,9 +193,9 @@ main(){
 			case 2 : printf("Digite o nome para inserir: \n");
 					 scanf("%[ -~]",&(dado.nome));
 					 pos = getPosicaoInsercaoOrdenada(lista, dado);
-					 printf("Digite a posicao: \n");
-					 scanf("%d",&pos);
-					 getchar();
+					 //printf("Digite a posicao: \n");
+					 //scanf("%d",&pos);
+					 //getchar();
 					 inserir(&lista, pos, dado);
 					 break;
 			default : printf("Nenhuma opcao escolhida !\n"); 					 			 
