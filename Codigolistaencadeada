@@ -142,19 +142,20 @@ int menu(){
 	
 	int q = 0;
 	
-	printf("================ EDITOR DE LISTAS ==================\n");
+	printf("================ EDITOR DE LISTAS ==================\n\n");
 	printf("[ 1 ] - Exibir listas\n");
 	printf("[ 2 ] - Inserir ordenadamente\n");
-	printf("[ 3 ] - Remover pelo dado]\n");
+	printf("[ 3 ] - Remover pelo dado\n");
 	printf("[ 4 ] - Remover pela posicao\n");
 	printf("[ 5 ] - Remover um intervalo de nos\n");
 	printf("[ 6 ] - Exibir elemento\n");
-	printf("[ 7 ] - Exibir posicao do elemento (Procurar)\n");
+	printf("[ 7 ] - Exibir posicao do elemento\n");
 	printf("[ 8 ] - Esvaziar\n");
-	printf("[ 0 ] - Sair\n");
-	printf("====================================================\n");
-	printf("Digite sua opcao: \n\n");
+	printf("[ 0 ] - Sair\n\n");
+	printf("====================================================\n\n");
+	printf("Digite sua opcao: ");
 	scanf("%d",&q);
+	printf("\n");
 	getchar();
 	
 	return q;
@@ -164,44 +165,101 @@ int menu(){
 	
 main(){
 	
-	t_lista lista = NULL, aux;
-	t_elemento dado;
-	int pos = 0, i = 0;
-	
-	/*printf("Digite o nome para insercao: \n");
-	scanf("%[ -~]",&(dado.nome));
-	getchar();
-	printf("\n");
-	printf("Nome inserido: %s\n\n",dado.nome);
-	
-	pos = getPosicaoInsercaoOrdenada(lista, dado); 
-	
-	inserir(&lista,pos,dado);
-	
-	printf("%s\n", lista->dado.nome);*/
+	t_lista lista = NULL, aux = NULL, aux2 = NULL, no1 = NULL, no2 = NULL;
+	t_elemento dado, * dado1 = NULL;
+	int pos = 0, i = 0, q = 0, sair = 1;
 	
 	
-	while(1){
+	while(sair){
 		aux = lista;
 		switch(menu()){
-			case 1 : 	while(aux != NULL){
-				     	printf("Posicao [ %d ]  Conteudo:[ %s ]\n\n",pos, aux->dado.nome);
+			case 1 : 	pos = 0;
+						while(aux != NULL){
+				     	printf("Posicao [ %d ]  Conteudo:  [ %s ]\n\n",pos, aux->dado.nome);
 			    	 	aux = aux->prox;
 			     		pos++;
 					 	}
+					 	puts("Pressione qualquer tecla para continuar.");
+						getchar();
 					 break;
-			case 2 : printf("Digite o nome para inserir: \n");
+			
+			case 2 : printf("Digite o nome para inserir: ");
 					 scanf("%[ -~]",&(dado.nome));
 					 pos = getPosicaoInsercaoOrdenada(lista, dado);
-					 //printf("Digite a posicao: \n");
-					 //scanf("%d",&pos);
-					 //getchar();
 					 inserir(&lista, pos, dado);
 					 break;
-			default : printf("Nenhuma opcao escolhida !\n"); 					 			 
+			
+			case 3 : printf("Digite o dado a ser removido: ");
+					 scanf("%[ -~]",&(dado.nome));
+					 pos = getPosicao(lista, dado);
+					 for(i = 0; i < pos; i++) aux = aux->prox;
+					 aux2 = aux->prox;
+					 remover(&lista, pos);
+					 aux = aux2;
+					 break;
+			case 4 : printf("Digite a posicao do elemento que deseja remover: ");
+					 scanf("%d", &pos);
+					 for(i = 0; i < pos; i++) aux = aux->prox;
+					 aux2 = aux->prox;
+					 remover(&lista, pos);
+					 aux = aux2;
+					 break;
+			case 5 : printf("Digite a posicao do inicio da remocao: ");
+					 scanf("%d",&pos);
+					 printf("Digite a posicao do fim da remocao: ");
+					 scanf("%d",&i);
+					 no1 = getNo(lista, pos-1);
+					 for(q = pos ; pos <= i; pos++){
+					    no2 = getNo(lista, q+1);
+						remover(&lista, q);
+						if(no1){
+						no1->prox = no2;
+						}
+						else no1 = no2;
+					 };
+					 break;
+			
+			case 6 : printf("Digite a posicao do elemento que deseja exibir: ");
+					 scanf("%d",&pos);
+					 dado1 = getElemento(lista, pos);
+					 printf("\n");
+					 printf("Elemento :   [  %s  ]\n",dado1->nome);
+					 printf("\n");
+					 printf("Pressione qualquer tecla para continuar...\n");					 					 					 
+					 getchar();
+					 getchar();
+					 break;
+					 
+			case 7 : printf("Digite o elemento que deseja obter a posicao: ");
+					 scanf("%[ -~]",&(dado.nome));
+					 pos = getPosicao(lista, dado);
+					 printf("\n");
+					 printf("Posicao:   [ %d ]\n",pos);
+					 printf("Pressione qualquer tecla para continuar...\n");
+					 getchar();
+					 break;
+					 
+			case 8 : while(lista){
+					 aux = lista->prox;
+					 remover(&lista,0);
+					 lista = aux;	
+					 }
+					 printf("Lista vazia, pressione qualquer tecla para continuar...\n");
+					 getchar();					 		 
+					 break;
+					 
+			case 0 : sair = 0;
+			         break;					 
+			
+			default : printf("Nenhuma opcao escolhida !\n");
+					  getchar();
+					  break; 					 			 
 		}
 		printf("\n");
+		system("cls");
 	}
 	
 	system("pause");
 }
+
+
