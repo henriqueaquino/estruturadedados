@@ -1,0 +1,163 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<strings.h>
+#define MAX 3
+//////////////////////////////////////
+typedef struct elementos {
+    char nome[50];
+    int num;
+} t_elemento;
+
+typedef struct pilha {
+    t_elemento vetor[MAX];
+    int topo;
+} t_pilha;
+
+///////////////////////////////////////
+
+t_pilha criar() {
+    t_pilha pilha;
+
+    pilha.topo = -1;
+
+    return pilha;
+}
+
+//////////////////////////////////////
+
+int isVazia(t_pilha * pilha) {
+    return (pilha->topo == -1);
+}
+
+//////////////////////////////////////
+
+int isCheia(t_pilha * pilha) {
+    return (pilha->topo == MAX-1);
+}
+
+/////////////////////////////////////////////
+
+t_elemento getElementoTopo(t_pilha * pilha){
+    t_elemento vazio = { "" } ;
+
+    if (isVazia(pilha))
+        return vazio;
+    else
+        return pilha->vetor[pilha->topo];
+}
+
+///////////////////////////////////////////////////
+
+t_elemento pop(t_pilha * pilha){
+    t_elemento vazio = { "" };
+
+    if (isVazia(pilha))
+        return vazio; // erro
+    else
+        return pilha->vetor[pilha->topo--];
+}
+
+///////////////////////////////////////////////////
+
+int push(t_pilha *pilha, t_elemento valor){
+    if (isCheia(pilha))
+        return 0;
+
+    pilha->vetor[++pilha->topo] = valor;
+
+    return 1;
+}
+
+//////////////////////////////////////////////////
+
+int menu(){
+	
+	int q = 0;
+	
+	printf("================ PILHA SEQUENCIA ==================\n\n");
+	printf("[ 1 ] - Exibir pilha\n");
+	printf("[ 2 ] - Inserir elemento (Topo)\n");
+	printf("[ 3 ] - Exibir elemento (Topo)\n");
+	printf("[ 4 ] - Retirar elemento (Topo)\n");
+	printf("[ 5 ] - Verificar se a pilha esta cheia\n");
+	printf("[ 6 ] - Esvaziar\n");
+	printf("[ 0 ] - Sair\n\n");
+	printf("====================================================\n\n");
+	printf("Digite sua opcao: ");
+	scanf("%d",&q);
+	printf("\n");
+	getchar();
+	
+	return q;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+main(){
+	
+	t_pilha mPilha;
+	t_elemento dado;
+	
+	int laco = 1, dig = 0, aux = 0, q = 0;
+	
+	mPilha = criar();
+	
+	while(laco){
+		
+		switch(dig = menu()){
+			
+			case 1 : for (q = 0; q <= mPilha.topo ; q++){
+						printf("\n");
+						printf("Posicao [ %d ]   Elemento Nome [ %s ]\n",q, mPilha.vetor[q].nome);
+						printf("Posicao [ %d ]   Elemento Numero [ %d ]\n",q, mPilha.vetor[q].num);
+						printf("\n");
+					 }
+					 printf("Pressione qualquer tecla para continuar.\n");
+					 getchar();
+					 break;
+			
+			case 2 : printf("Digite o nome para inserir: \n");
+					 scanf("%[ -~]",&dado.nome);
+					 getchar();
+					 printf("Digite o numero para inserir: \n");
+					 scanf("%d",&dado.num);
+					 getchar();
+					 push(&mPilha, dado);
+					 break;
+					 
+			case 3 : printf("Elemento nome:   [ %s ]\n",mPilha.vetor[mPilha.topo].nome);
+					 printf("Elemento numero:   [ %d ]\n",mPilha.vetor[mPilha.topo].num);
+					 printf("Pressione qualquer tecla para continuar.\n");
+					 getchar();
+					 break;					 
+			
+			case 4 : dado = pop(&mPilha);
+					 printf("Elemento retirado:   Nome [ %s ]   Numero [ %d ]\n",dado.nome,dado.num);
+					 printf("Pressione qualquer tecla para continuar.");
+					 getchar();
+					 break;
+					 
+			case 5 : aux = isCheia(&mPilha);
+					 if(aux) printf("Pilha esta cheia !\n");
+						else
+							printf("Pilha suporta mais elementos. ");
+					 printf("Pressione qualquer tecla para continuar.");
+					 getchar();
+					 break;
+					 
+			case 6 : mPilha.topo = -1;
+					 break;					 							 
+			
+			case 0 : laco = 0;
+					 break;
+					 					 					 
+			default : printf("Nenhuma opcao escolhida !\n");
+					  printf("Pressione qualquer tecla para continuar.\n");
+					  getchar();
+					  break;			 					 					 
+		}
+		system("cls");
+	}
+	
+	system("pause");
+}	
