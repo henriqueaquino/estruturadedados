@@ -1,0 +1,172 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<strings.h>
+#define MAX 5
+
+////////////////////////////////////////
+//Elementos da fila
+typedef struct elementos {
+    char nome[50];	
+} t_elemento;
+//Estrutura da celula com um vetor dos elementos
+typedef struct fila {
+    t_elemento vetor[MAX];
+    int inicio;
+    int fim;
+    int quant_element;
+} t_fila;
+
+/////////////////////////////////////////////////////
+//Inicialização das variáveis de controle inicio, fim, q.Elementos
+t_fila criar(){
+    
+	t_fila fila;
+
+    fila.inicio = 0;
+    fila.fim = -1;
+    fila.quant_element = 0;
+
+    return fila;
+}
+
+///////////////////////////////////////////
+
+int isVazia (t_fila * fila){
+	
+    return (fila->quant_element == 0);
+}
+
+////////////////////////////////////////////////
+
+int isCheia(t_fila * fila){
+	
+    return (fila->quant_element == MAX);
+}
+
+////////////////////////////////////////////////////
+//Incrementação das variaveis q.Elementos e fim (Da estrutura). Utilização do conceito de fila circular, evitando overflow.
+int inserir (t_fila * fila, t_elemento valor){
+	
+    if (isCheia(fila)) return 0;
+
+    (fila->quant_element)++;
+    fila->fim = (fila->fim + 1) % MAX;
+    fila->vetor[fila->fim] = valor;
+    return 1;
+}
+
+//////////////////////////////////////////////////////
+//Decrementação da variavel q.Elementos. Zerando a string utilizando conceito de \0. Incrementação da variavel inicio seguindo a ideia de fila circular. 
+t_elemento remover(t_fila * fila){
+	
+    t_elemento valor = { "" } ;
+    if (isVazia(fila)) return valor;
+
+    valor = fila->vetor[fila->inicio];
+    fila->vetor[fila->inicio].nome[0] = '\0';
+    (fila->quant_element)--;
+    fila->inicio = (fila->inicio + 1) % MAX;
+    return valor;
+}
+
+////////////////////////////////////////////////////
+
+int menu(){
+	
+	int q = 0;
+	
+	printf("================ PILHA SEQUENCIA ==================\n\n");
+	printf("[ 1 ] - Exibir fila\n");
+	printf("[ 2 ] - Inserir elemento (Fim)\n");
+	printf("[ 3 ] - Exibir elemento (Inicio)\n");
+	printf("[ 4 ] - Retirar elemento (Inicio)\n");
+	printf("[ 5 ] - Verificar se a fila esta vazia\n");
+	printf("[ 6 ] - Esvaziar\n");
+	printf("[ 0 ] - Sair\n\n");
+	printf("====================================================\n\n");
+	printf("Digite sua opcao: ");
+	scanf("%d",&q);
+	printf("\n");
+	getchar();
+	
+	return q;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+main (){
+	
+	t_fila mFila;
+	t_elemento dado;
+	
+	int laco = 1, q = 0;
+	
+	mFila = criar();
+	
+	while (laco){
+		
+		switch (q = menu()){
+			case 1 : for (q = mFila.inicio; q != mFila.fim + 1; q = (q + 1) % MAX){
+						
+						printf("Posicao [ %d ] Elemento [ %s ]\n", q, mFila.vetor[q].nome);				
+					 };
+					 printf("\n");
+					 printf("Pressione qualquer tecla para continuar.\n");
+					 getchar();
+					 break;
+					 
+			case 2 : printf("Digite o nome para inserir: \n");
+					 scanf("%[ -~]", &dado.nome);
+					 inserir (&mFila, dado);
+					 break;
+					 
+			case 3 : printf("Elemento inicio:   [ %s ]\n", mFila.vetor[mFila.inicio]);
+					 printf("Pressione qualquer tecla para continuar.\n");
+					 getchar();
+					 break;
+					 
+			case 4 : dado = remover (&mFila);
+					 printf("Elemento removido:   [ %s ]\n", dado.nome);
+					 printf("\n");
+					 printf("Pressione qualquer tecla para continuar.\n");					 					 					 
+					 getchar();
+					 break;
+					 
+			case 5 : if(isVazia(&mFila)) printf("Fila esta vazia !\n");
+					 	else
+						 	printf("Nao esta vazia !\n");
+					 printf("Pressione qualquer tecla para continuar.\n");
+					 getchar();
+					 break;					 
+			
+			case 6 : mFila = criar();
+					 break;
+			
+			case 0 : laco = 0;
+					 break;
+					 
+			default : printf("Nenhuma opcao escolhida !\n");
+					  printf("Pressione qualquer tecla para continuar.");
+					  getchar();
+					  break;					 
+		}
+		system("cls");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
