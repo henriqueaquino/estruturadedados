@@ -1,0 +1,122 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<strings.h>
+
+typedef struct elementos {
+    
+	int valor;  
+} t_elemento;
+
+typedef struct no {
+    t_elemento dado;
+    struct no  * prox;
+} t_no;
+
+typedef t_no * t_pilha;
+
+t_no * criaNo() {
+    t_no * no = (t_no*) malloc(sizeof(t_no));
+
+    if (no) no->prox = NULL;
+
+    return no;
+}
+
+int push(t_pilha *pilha, t_elemento dado){
+	
+    t_no* novo;
+    novo = criaNo();
+    
+	if (novo == NULL) return 0;
+    
+	novo->dado = dado;
+    novo->prox = *pilha;
+    *pilha = novo;
+
+    return 1;
+}
+
+t_elemento pop(t_pilha *pilha){
+	
+    t_no * aux;
+    t_elemento valor;
+
+    aux = *pilha;
+    valor = (*pilha)->dado;
+    *pilha = aux->prox;
+    free(aux);
+
+    return valor;
+}
+
+main (){
+	
+	t_pilha mPilha = NULL;
+	t_elemento num, num2, res;
+	
+	char valor[50], aux[10];
+	int laco = 1, q = 0, tam = 0, w = 0, a = 0;
+	
+	while(laco){
+		
+		printf("Digite sua operacao: \n");
+		scanf("%[ -~]", &valor);
+		rewind(stdin);
+		
+		tam = strlen(valor);
+		
+			while (w < tam){
+				printf("%d\n", w);
+				
+				while(aux[a] != ' '){
+					aux[a++] = valor[w++];	
+					printf(" %c %c \n",aux[a], valor[w]);
+				}
+				
+				printf("AUX RECEBEU\n");
+				printf("%d", a);
+				printf("%d\n", w);
+				puts(aux);
+				aux[a] = '\0';
+				a = 0;
+				w++;
+				
+				if (aux[0] == '+' || aux[0] == '-' || aux[0] == '*' || aux[0] == '/') {
+             	printf("ENTROU NO IF DO OPERADOR\n");
+				printf("dois pop calcula e push\n");
+      			num2 = pop(&mPilha);
+				num = pop(&mPilha);			
+				
+				if (aux[0] == '+') res.valor = num.valor + num2.valor;
+             	else if (aux[0] == '-') res.valor = num.valor - num2.valor;
+ 			 	else if (aux[0] == '*') res.valor = num.valor * num2.valor;
+			 	else if (aux[0] == '/') res.valor = num.valor / num2.valor;
+			 	printf("EXIBIU O RESULTADO.\n");
+			 	push(&mPilha, res);
+			 	printf("Resultado: %d", mPilha->dado.valor);
+			 	getchar();
+				}
+				else
+					{
+						printf("ENTROU NO ELSE\n");
+						num.valor = atoi(aux);
+						push(&mPilha, num);
+					};
+
+			};	
+		
+		
+		printf("Deseja continuar operando: [ 1 ] Sim   [ 2 ] Nao\n");
+		scanf("%d", &q);
+		rewind(stdin);
+		
+		if ( q == 2) laco = 0;
+	};
+		
+}
+
+
+
+
+
+
