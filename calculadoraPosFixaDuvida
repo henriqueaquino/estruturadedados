@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<strings.h>
-
+//=========================================================================
 typedef struct elementos {
     
 	int valor;  
@@ -13,7 +13,7 @@ typedef struct no {
 } t_no;
 
 typedef t_no * t_pilha;
-
+//=========================================================================
 t_no * criaNo() {
     t_no * no = (t_no*) malloc(sizeof(t_no));
 
@@ -21,7 +21,7 @@ t_no * criaNo() {
 
     return no;
 }
-
+//=========================================================================
 int push(t_pilha *pilha, t_elemento dado){
 	
     t_no* novo;
@@ -35,7 +35,7 @@ int push(t_pilha *pilha, t_elemento dado){
 
     return 1;
 }
-
+//=========================================================================
 t_elemento pop(t_pilha *pilha){
 	
     t_no * aux;
@@ -48,7 +48,7 @@ t_elemento pop(t_pilha *pilha){
 
     return valor;
 }
-
+//=========================================================================
 main (){
 	
 	t_pilha mPilha = NULL;
@@ -73,17 +73,14 @@ main (){
 					printf(" %c %c \n",aux[a], valor[w]);
 				}
 				
-				printf("AUX RECEBEU\n");
 				printf("%d", a);
 				printf("%d\n", w);
-				puts(aux);
+				
 				aux[a] = '\0';
 				a = 0;
 				w++;
 				
-				if (aux[0] == '+' || aux[0] == '-' || aux[0] == '*' || aux[0] == '/') {
-             	printf("ENTROU NO IF DO OPERADOR\n");
-				printf("dois pop calcula e push\n");
+				if (aux[0] == '+' || aux[0] == '-' || aux[0] == '*' || aux[0] == '/') {				
       			num2 = pop(&mPilha);
 				num = pop(&mPilha);			
 				
@@ -91,14 +88,13 @@ main (){
              	else if (aux[0] == '-') res.valor = num.valor - num2.valor;
  			 	else if (aux[0] == '*') res.valor = num.valor * num2.valor;
 			 	else if (aux[0] == '/') res.valor = num.valor / num2.valor;
-			 	printf("EXIBIU O RESULTADO.\n");
+			 	
 			 	push(&mPilha, res);
 			 	printf("Resultado: %d", mPilha->dado.valor);
 			 	getchar();
 				}
 				else
 					{
-						printf("ENTROU NO ELSE\n");
 						num.valor = atoi(aux);
 						push(&mPilha, num);
 					};
@@ -114,7 +110,6 @@ main (){
 	};
 		
 }
-
 
 
 
