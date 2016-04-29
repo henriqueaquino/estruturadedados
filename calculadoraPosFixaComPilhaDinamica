@@ -54,64 +54,74 @@ main (){
 	t_pilha mPilha = NULL;
 	t_elemento num, num2, res;
 	
-	char valor[50], aux[10];
+	char valor[50], aux[20];
 	int laco = 1, q = 0, tam = 0, w = 0, a = 0;
 	
+	//While para ser possivel uma nova operação
 	while(laco){
 		
-		printf("Digite sua operacao: \n");
+		q = tam = w = a = 0;
+		
+		printf("ALUNO:        HENRIQUE SERGIO DE AQUINO\n");
+		printf("DISCIPLINA:   ESTRUTURA DE DADOS I\n");
+		printf("PROFESSOR:    WALACE BONFIM\n");
+		printf("\n");
+		
+		printf("Digite sua operacao: ");
 		scanf("%[ -~]", &valor);
+		printf("\n");
 		rewind(stdin);
 		
+		//Função srtlen retornar o tamanho da string sem " \0 "
+		// tam recebe o tamanho da string
 		tam = strlen(valor);
-		
-			while (w < tam){
-				printf("%d\n", w);
+			
+			//While responsável pela operacao, sendo controlado pelo tamanho da expressão
+			while (w <= tam){
 				
-				while(aux[a] != ' '){
-					aux[a++] = valor[w++];	
-					printf(" %c %c \n",aux[a], valor[w]);
-				}
-				
-				printf("%d", a);
-				printf("%d\n", w);
-				
+				//Laço em que um vetor auxiliar recebe os operandos para em seguida converte-los em inteiros 
+				while((valor[a] != ' ') && (valor[a] != '\0')) aux[a++] = valor[w++];	
+
 				aux[a] = '\0';
 				a = 0;
 				w++;
 				
+				//if (w == 6) w--;
+				
+				// Após ser achado um operador entra neste if e será feito dois pops em que seram retornados os operandos
 				if (aux[0] == '+' || aux[0] == '-' || aux[0] == '*' || aux[0] == '/') {				
       			num2 = pop(&mPilha);
-				num = pop(&mPilha);			
+				num = pop(&mPilha);	
 				
+				//If em que sera feita a operacao
 				if (aux[0] == '+') res.valor = num.valor + num2.valor;
              	else if (aux[0] == '-') res.valor = num.valor - num2.valor;
  			 	else if (aux[0] == '*') res.valor = num.valor * num2.valor;
 			 	else if (aux[0] == '/') res.valor = num.valor / num2.valor;
 			 	
+			 	//Resultado entra na pilha e é exibido na tela
 			 	push(&mPilha, res);
 			 	printf("Resultado: %d", mPilha->dado.valor);
-			 	getchar();
+			 	printf("\n");
 				}
+				//Se não achado um operador os operando são convertiddos em inteiros pela funcao atoi
+				// E são colocados na pilha
 				else
 					{
 						num.valor = atoi(aux);
 						push(&mPilha, num);
 					};
-
 			};	
 		
-		
+		printf("\n");
 		printf("Deseja continuar operando: [ 1 ] Sim   [ 2 ] Nao\n");
 		scanf("%d", &q);
 		rewind(stdin);
-		
+		system("cls");
 		if ( q == 2) laco = 0;
 	};
 		
 }
-
-
 
 
 
