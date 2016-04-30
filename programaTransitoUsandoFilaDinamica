@@ -1,0 +1,190 @@
+#include<stdio.h>
+#include<stdlib.h> //Serão usadas as funções rand() e srand() dessa biblioteca para gerar numero aleatórios
+#include<strings.h>
+#include<time.h> // Sera usado a função time(NULL) na geração de numeros aleatórios
+
+//////////////////////////////////////////////////////
+//Estruturas que irão representar no programa os carros e ruas
+typedef struct elementos {
+    char nome[50];
+} t_elemento;
+
+typedef struct no {
+    t_elemento dado;
+    struct no * prox;
+} t_no;
+
+typedef struct fila {
+    t_no* inicio;
+    int quant_element;
+    t_no* final;
+} t_fila;
+
+/////////////////////////////////////////////////////
+//As cabecas são representadas pelas variaveis rua 1 e rua 2
+t_fila * criaCabeca (){
+	
+    t_fila * fila = (t_fila*) malloc(sizeof(t_fila));
+
+    if (fila) {
+        fila->inicio = fila->final = NULL;
+        fila->quant_element=0;
+    }
+
+    return fila;
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+t_no * criaNo() {
+	
+    t_no * no = (t_no*) malloc(sizeof(t_no));
+    if (no)
+        no->prox = NULL;
+
+    return no;
+}
+
+///////////////////////////////////////////////////////////////////////
+
+int isVazia (t_fila * fila){
+	
+    return (fila->quant_element == 0);
+}
+
+////////////////////////////////////////////////////////////////////////
+
+int inserir (t_fila *fila, t_elemento valor) {
+ 
+    t_no *novo;
+    novo = criaNo();
+    
+	if (novo == NULL) return 0;
+    
+	novo->dado = valor;
+    
+	if (isVazia(fila))
+        fila->inicio = novo;
+    else
+        (fila->final)->prox = novo;
+    fila->final = novo;
+    fila->quant_element++;
+    return 1;
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+t_elemento remover (t_fila *fila){
+	
+    t_no *aux;
+    t_elemento valor = { "" } ;
+    
+	if (isVazia(fila)) return valor;
+    
+	valor = (fila->inicio)->dado;
+    
+	if (fila->inicio == fila->final) fila->final = NULL;
+    
+	aux = fila->inicio;
+    fila->inicio = (fila->inicio)->prox;
+    free(aux);
+    fila->quant_element--;
+    return valor;
+}
+
+main (){
+	
+	t_fila * rua1 = NULL, * rua2 = NULL;
+	
+	// Função srand recebe um valor inteiro positivo retornado da função time(NULL)
+	// E muda o valor das semente da função rand();
+	srand(time(NULL));
+	t_elemento dado;
+	
+	int q, w, sinal1 = 0, sinal2, laco = 0;
+	
+	rua1 = criaCabeca();
+	rua2 = criaCabeca();
+	
+	while(1){
+
+		sinal1++;	
+		sinal2++;
+		
+		//Variavel q recebe um valor aleatorio em 0 e 1000;
+		q = rand() % 1000;
+		
+		//Se o valor aleatorio retornado for menor que 250
+		//Os carros começam a passar na rua 1
+		if (q < 250){
+			
+			inserir(rua1, dado);
+			printf("Carro na rua 1 \n");
+		}
+		
+		//Se o valor aleatorio retornado for maior ou igual a 250 e menor de 500
+		//Os carros começam a passar na rua 2
+		 
+		if ((q >= 250) && (q < 500)){
+			
+			 inserir(rua2, dado);
+			 printf("Carro na rua 2 \n");
+		}
+		
+		//Se o valor aleatorio retornado for maior ou igual a 500 e menor que 1000
+		//Nada aconetece na rua 1 nem na rua 2
+		
+		if ((q >= 500) && (q < 1000)) printf("Nada acontecendo ...\n");
+	
+		if (sinal1 == 10){
+			printf("\n");
+			printf("### SINAL RUA 1    FECHADO ! ! !\n");
+		}
+		
+		if (sinal1 == 20){
+			printf("\n");
+			
+			// A quantidade de carros estará armazenado na cabeca da fila (Rua 1 e Rua 2)
+			printf("Quantidade de CARROS na rua 1:   %d\n\n", rua1->quant_element);
+			printf("### SINAL RUA 1    ABERTO ! ! !\n");
+			sinal1 = 0;
+		}
+			
+		if (sinal2 == 10){
+			 printf("\n");
+			 printf("Quantidade de carros na rua 2:    %d\n\n", rua2->quant_element);	
+			 printf("### SINAL RUA 2    ABERTO ! ! !\n");
+		}
+		
+		if (sinal2 == 20){
+			printf("\n");
+			printf("### SINAL RUA 2     FECHADO ! ! ! \n");
+			sinal2 = 0;
+		}
+		
+		if ((sinal1 >= 0) && (sinal1 < 9)){
+				printf("Carros passando na rua 1 ...\n");
+				remover(rua1);
+		}
+		
+		if ((sinal2 >= 10) && (sinal2 < 19)){
+			printf("Carros passando na rua 2 ...\n");
+			remover(rua2);
+		}	
+		
+		//Função sleep que retarda a execução do programa para ser possivel vê-lo. Faz parte do pacote time.h
+		//Os valor dos argumentos são em milisegundos
+		sleep(2);
+		printf("\n");
+	}
+}
+
+
+
+
+
+
+
+
+
+
