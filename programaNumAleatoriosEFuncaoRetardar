@@ -1,0 +1,25 @@
+#include<stdio.h>
+#include<stdlib.h> //Biblioteca para as funções rand() e srand(unsigned int(Argumento))
+#include<time.h> // Biblioteca para as funcões  time(NULL)  e  sleep()
+
+//Para que a função rand() gere valores aleatórios é necessário mudar a semente para isso utiliza-se as funções srand e time
+
+main (){
+	
+	int i = 1;
+	
+	//Função srand() irá gerar valores aleatórios para a função rand() usando os retornos da função time
+	srand(time(NULL));
+	
+	while(1){
+		
+		//Sintaxe da função rand():  rand() % 100   Gera valores aleatórios de 0 a 100
+		//                           rand() % 1000  Gera valores aleatórios de 0 a 100 etc 
+ 		
+		printf("%d \n", rand() % 100);
+		
+		//Função sleep() recebe o tempo em milisegundos a ser retardado
+		
+		sleep(i);
+	}
+}
