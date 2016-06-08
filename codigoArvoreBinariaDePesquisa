@@ -248,13 +248,19 @@ main (){
 			case 4 : esvaziar (&arvore);
 					 break;
 					 
-			case 5 : exibirPreOrdem(arvore);
+			case 5 : printf("PreOrdem: ");
+					 exibirPreOrdem(arvore);
 					 printf("\n");
 					 getchar();
+					 printf("InOrdem: ");
 					 exibirInOrdem(arvore);
 					 printf("\n");
 					 getchar();
+					 printf("PosOrdem: ");
 					 exibirPosOrdem(arvore);
+					 printf("\n");
+					 getchar();
+					 exibirGraficamente(arvore, 30, 16 , 5);
 					 printf("\n");
 					 getchar();
 					 break;
@@ -265,12 +271,6 @@ main (){
 		system("cls");
 	}
 }
-
-
-
-
-
-
 
 
 	
