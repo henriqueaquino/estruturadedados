@@ -197,6 +197,15 @@ int remover (t_arvore *tree, t_elemento item) {
 int menu(){
 	int valor = 0;
 	
+	printf("ALUNO: HENRIQUE SERGIO DE AQUINO\n");
+	printf("DISCIPLINA: ESTRUTURA DE DADOS I\n");
+	printf("PROFESSOR: WALACE BONFIM\n");
+	printf("==================================\n");
+	printf("\n");
+	printf("OBS: O programa ler um arquivo txt nomeado 'arvore' de strings separadas por espaco\n");
+	printf("     se nao houver executa normalmente as funcoes.\n");
+	printf("\n");
+	printf("==================================\n");
 	printf("###    EDITOR DE ARVORE   ###\n");
 	printf("[ 1 ] - Inserir\n");
 	printf("[ 2 ] - Remover apenas um no\n");
@@ -219,61 +228,67 @@ main (){
 	t_elemento dado;
 	t_no * aux = NULL;
 	int laco = 1;
-	FILE * arv = NULL;
 	
-	arv = fopen("arvore.txt", "w+");
-	if(arv != NULL){
-		while(laco){
-			switch(menu()){
-				case 1 : printf("Digite o dado para inserir: \n");
-						 scanf("%[ -~]", &dado);
-						 getchar();
-						 inserir(&arvore, dado);
-						 strcat(dado.nome, " ");
-						 fprintf(arv, dado.nome);
-						 break;
-						 
-				case 2 : printf("Digite o dado que deseja remover: \n");
-						 scanf("%[ -~]", &dado);
-						 getchar(); 				 
-						 remover(&arvore, dado);
-						 break;
-						 
-				case 3 : printf("Digite o elemento para pesquisar: \n");
-						 scanf("%[ -~]", &dado);
-						 getchar();
-						 aux = busca(arvore, dado);
-						 if(aux != NULL){
-						 	printf("O elemento foi encontrado na arvore\n");
-						 }
-						 else printf("Elemento nao encontrado\n");
-						 getchar();
-						 break;
-						 
-				case 4 : esvaziar (&arvore);
-						 break;
-						 
-				case 5 : printf("PreOrdem: ");
-						 exibirPreOrdem(arvore);
-						 printf("\n");
-						 getchar();
-						 printf("InOrdem: ");
-						 exibirInOrdem(arvore);
-						 printf("\n");
-						 getchar();
-						 printf("PosOrdem: ");
-						 exibirPosOrdem(arvore);
-						 printf("\n");
-						 getchar();
-						 exibirGraficamente(arvore, 30, 16 , 5);
-						 printf("\n");
-						 getchar();
-						 break;
-						 
-				case 0 : laco = 0;
-						 break;				 				 				 				 
-			}
-			system("cls");
+	FILE * arq = NULL;
+	
+	arq = fopen("arvore.txt", "r");
+	
+	if(arq != NULL){
+		while(!feof(arq)){
+			fscanf(arq, "%s", dado.nome);
+			inserir(&arvore, dado);
 		}
 	}
+	
+	while(laco){
+		switch(menu()){
+			case 1 : printf("Digite o dado para inserir: \n");
+					 scanf("%[ -~]", &dado.nome);
+					 getchar();
+					 inserir(&arvore, dado);
+					 break;
+					 
+			case 2 : printf("Digite o dado que deseja remover: \n");
+					 scanf("%[ -~]", &dado.nome);
+					 getchar(); 				 
+					 remover(&arvore, dado);
+					 break;
+					 
+			case 3 : printf("Digite o elemento para pesquisar: \n");
+					 scanf("%[ -~]", &dado.nome);
+					 getchar();
+					 aux = busca(arvore, dado);
+					 if(aux != NULL){
+					 	printf("O elemento foi encontrado na arvore\n");
+					 }
+					 else printf("Elemento nao encontrado\n");
+					 getchar();
+					 break;
+					 
+			case 4 : esvaziar (&arvore);
+					 break;
+					 
+			case 5 : printf("PreOrdem: ");
+					 exibirPreOrdem(arvore);
+					 printf("\n");
+					 getchar();
+					 printf("InOrdem: ");
+					 exibirInOrdem(arvore);
+					 printf("\n");
+					 getchar();
+					 printf("PosOrdem: ");
+					 exibirPosOrdem(arvore);
+					 printf("\n");
+					 getchar();
+					 exibirGraficamente(arvore, 70, 16 , 5);
+					 printf("\n");
+					 getchar();
+					 break;
+					 
+			case 0 : laco = 0;
+					 break;				 				 				 				 
+		}
+		system("cls");
+	}
 }
+
